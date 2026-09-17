@@ -38,14 +38,12 @@
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
+        <!-- Dynamic Owner Filter -->
         <div>
           <label class="block text-xs font-semibold text-gray-500 mb-1">Owner</label>
           <select id="filterOwner" onchange="renderApp()"
             class="w-full p-2 bg-gray-50 border border-gray-200 rounded-md text-xs">
             <option value="All">All Owners</option>
-            <option value="Kristina">Kristina</option>
-            <option value="Friend 1">Friend 1</option>
-            <option value="Friend 2">Friend 2</option>
           </select>
         </div>
 
@@ -144,15 +142,15 @@
     <div id="shoeGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
   </main>
 
-  <!-- Detail Lightbox Modal with Multi-Photo Slider -->
-  <div id="detailModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4"
+  <!-- Detail Lightbox Modal (White Background) -->
+  <div id="detailModal" class="fixed inset-0 bg-black/70 hidden z-50 flex items-center justify-center p-4"
     onclick="closeDetailModalOnBackdrop(event)">
     <div
       class="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] overflow-hidden shadow-2xl flex flex-col md:flex-row relative">
       <button onclick="toggleDetailModal(false)"
         class="absolute top-3 right-3 z-20 bg-black/50 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black transition">✕</button>
 
-      <!-- Big Image View with Arrows & Thumbnails -->
+      <!-- Big Image View -->
       <div class="md:w-3/5 bg-gray-50 flex flex-col justify-between p-4 relative min-h-[350px]">
         <div class="relative flex-1 flex items-center justify-center overflow-hidden">
           <img id="detailImage" src="" alt="" class="max-h-[50vh] md:max-h-[65vh] w-full object-contain rounded-lg">
@@ -216,7 +214,7 @@
     </div>
   </div>
 
-  <!-- Add Shoe Modal with Custom Upload Cards & Individual Progress Bars -->
+  <!-- Add Shoe Modal -->
   <div id="uploadModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-xl">
       <div class="flex justify-between items-center mb-4">
@@ -226,12 +224,12 @@
 
       <form id="uploadForm" onsubmit="handleUpload(event)" class="space-y-4">
 
-        <!-- Custom Photo Upload Cards -->
+        <!-- Custom Photo Cards -->
         <div class="space-y-2">
           <label class="block text-xs font-semibold text-gray-700">Photos (Up to 3)</label>
           <div class="grid grid-cols-3 gap-3">
 
-            <!-- Photo 1 Card -->
+            <!-- Photo 1 -->
             <div
               class="relative border-2 border-dashed border-gray-300 rounded-lg p-2 text-center hover:border-black transition flex flex-col justify-center items-center h-28 bg-gray-50 cursor-pointer"
               onclick="document.getElementById('shoeImage1').click()">
@@ -246,7 +244,6 @@
               <button type="button" id="removeBtn1" onclick="clearCardImage(event, 1)"
                 class="hidden absolute -top-2 -right-2 bg-black text-white rounded-full w-5 h-5 text-xs font-bold flex items-center justify-center z-10 shadow">✕</button>
 
-              <!-- Individual Progress Bar 1 -->
               <div id="progressBox1" class="hidden absolute bottom-0 left-0 right-0 bg-black/70 p-1 rounded-b-md">
                 <div class="flex justify-between text-[9px] text-white font-medium mb-0.5 px-1">
                   <span id="statusTxt1">Uploading...</span>
@@ -258,7 +255,7 @@
               </div>
             </div>
 
-            <!-- Photo 2 Card -->
+            <!-- Photo 2 -->
             <div
               class="relative border-2 border-dashed border-gray-300 rounded-lg p-2 text-center hover:border-black transition flex flex-col justify-center items-center h-28 bg-gray-50 cursor-pointer"
               onclick="document.getElementById('shoeImage2').click()">
@@ -273,7 +270,6 @@
               <button type="button" id="removeBtn2" onclick="clearCardImage(event, 2)"
                 class="hidden absolute -top-2 -right-2 bg-black text-white rounded-full w-5 h-5 text-xs font-bold flex items-center justify-center z-10 shadow">✕</button>
 
-              <!-- Individual Progress Bar 2 -->
               <div id="progressBox2" class="hidden absolute bottom-0 left-0 right-0 bg-black/70 p-1 rounded-b-md">
                 <div class="flex justify-between text-[9px] text-white font-medium mb-0.5 px-1">
                   <span id="statusTxt2">Uploading...</span>
@@ -285,7 +281,7 @@
               </div>
             </div>
 
-            <!-- Photo 3 Card -->
+            <!-- Photo 3 -->
             <div
               class="relative border-2 border-dashed border-gray-300 rounded-lg p-2 text-center hover:border-black transition flex flex-col justify-center items-center h-28 bg-gray-50 cursor-pointer"
               onclick="document.getElementById('shoeImage3').click()">
@@ -300,7 +296,6 @@
               <button type="button" id="removeBtn3" onclick="clearCardImage(event, 3)"
                 class="hidden absolute -top-2 -right-2 bg-black text-white rounded-full w-5 h-5 text-xs font-bold flex items-center justify-center z-10 shadow">✕</button>
 
-              <!-- Individual Progress Bar 3 -->
               <div id="progressBox3" class="hidden absolute bottom-0 left-0 right-0 bg-black/70 p-1 rounded-b-md">
                 <div class="flex justify-between text-[9px] text-white font-medium mb-0.5 px-1">
                   <span id="statusTxt3">Uploading...</span>
@@ -316,12 +311,12 @@
         </div>
 
         <div class="grid grid-cols-2 gap-3">
+          <!-- Dynamic Owner Add Dropdown -->
           <div>
             <label class="block text-xs font-semibold mb-1">Owner</label>
             <select id="addOwner" required class="w-full p-2 border rounded-md text-xs">
-              <option value="Kristina">Kristina</option>
-              <option value="Friend 1">Friend 1</option>
-              <option value="Friend 2">Friend 2</option>
+              <option value="" disabled selected hidden>Select Owner</option>
+              <option value="__NEW__">+ Add New Owner...</option>
             </select>
           </div>
           <div>
@@ -447,6 +442,49 @@
       if (e.target.id === 'detailModal') toggleDetailModal(false);
     }
 
+    function updateOwnerDropdowns() {
+      const filterSelect = document.getElementById('filterOwner');
+      const addSelect = document.getElementById('addOwner');
+
+      const uniqueOwners = [...new Set(allShoes.map(shoe => shoe.owner).filter(Boolean))].sort();
+
+      const currentFilterVal = filterSelect.value;
+      filterSelect.innerHTML = `<option value="All">All Owners</option>`;
+      uniqueOwners.forEach(owner => {
+        filterSelect.innerHTML += `<option value="${owner}">${owner}</option>`;
+      });
+      filterSelect.value = uniqueOwners.includes(currentFilterVal) ? currentFilterVal : 'All';
+
+      const currentAddVal = addSelect.value;
+      addSelect.innerHTML = `
+        <option value="" disabled selected hidden>Select Owner</option>
+        ${uniqueOwners.map(owner => `<option value="${owner}">${owner}</option>`).join('')}
+        <option value="__NEW__">+ Add New Owner...</option>
+      `;
+      addSelect.value = currentAddVal || "";
+    }
+
+    document.getElementById('addOwner').addEventListener('change', function (e) {
+      if (e.target.value === '__NEW__') {
+        const newName = prompt("Enter new owner name:");
+        if (newName && newName.trim() !== '') {
+          const cleanName = newName.trim();
+          const addSelect = document.getElementById('addOwner');
+          const exists = Array.from(addSelect.options).some(opt => opt.value === cleanName);
+
+          if (!exists) {
+            const opt = document.createElement('option');
+            opt.value = cleanName;
+            opt.textContent = cleanName;
+            addSelect.insertBefore(opt, addSelect.lastElementChild);
+          }
+          addSelect.value = cleanName;
+        } else {
+          e.target.value = "";
+        }
+      }
+    });
+
     function previewCardImage(num) {
       const input = document.getElementById(`shoeImage${num}`);
       const preview = document.getElementById(`previewImg${num}`);
@@ -542,7 +580,7 @@
         nextBtn.classList.remove('hidden');
 
         thumbnailContainer.innerHTML = activeImages.map((imgUrl, idx) => `
-          <img src="${imgUrl}" onclick="setLightboxImage(${idx})" class="w-12 h-12 object-cover rounded-md cursor-pointer border-2 transition ${idx === activeImageIdx ? 'border-white scale-105' : 'border-transparent opacity-50 hover:opacity-100'}">
+          <img src="${imgUrl}" onclick="setLightboxImage(${idx})" class="w-12 h-12 object-cover rounded-md cursor-pointer border-2 transition ${idx === activeImageIdx ? 'border-black scale-105' : 'border-transparent opacity-50 hover:opacity-100'}">
         `).join('');
       }
     }
@@ -619,6 +657,7 @@
       const {data, error} = await db.from('shoes').select('*').order('created_at', {ascending: false});
       if (!error && data) {
         allShoes = data;
+        updateOwnerDropdowns();
         renderApp();
       }
     }
@@ -632,6 +671,12 @@
 
       if (!file1) {
         alert("Please select at least a Main Photo.");
+        return;
+      }
+
+      const ownerVal = document.getElementById('addOwner').value;
+      if (!ownerVal || ownerVal === '__NEW__') {
+        alert("Please select or add a valid owner.");
         return;
       }
 
@@ -667,7 +712,7 @@
         }
 
         const newShoe = {
-          owner: document.getElementById('addOwner').value,
+          owner: ownerVal,
           gender: document.getElementById('addGender').value,
           brand: document.getElementById('addBrand').value,
           size_eu: parseFloat(document.getElementById('addSize').value),
