@@ -613,24 +613,24 @@
         if (shoe && shoe.image_url) {
           const imgs = Array.isArray(shoe.image_url) ? shoe.image_url : [shoe.image_url];
 
-          // Extract clean relative paths inside the 'shoe-photos' bucket
-          const filePaths = imgs.map(urlStr => {
-            try {
-              const parsedUrl = new URL(urlStr);
-              const pathSegments = parsedUrl.pathname.split('/shoe-photos/');
-              return pathSegments.length > 1 ? decodeURIComponent(pathSegments[1]) : null;
-            } catch {
-              return urlStr.split('/').pop();
-            }
+          // Extract strict filenames, removing any query parameters or relative paths
+          const fileNames = imgs.map(urlStr => {
+            if (!urlStr) return null;
+            const cleanUrl = urlStr.split('?')[0];
+            return decodeURIComponent(cleanUrl.split('/').pop());
           }).filter(Boolean);
 
-          if (filePaths.length > 0) {
-            const {error: storageError} = await db.storage
+          console.log("Removing storage files:", fileNames);
+
+          if (fileNames.length > 0) {
+            const {data, error: storageError} = await db.storage
               .from('shoe-photos')
-              .remove(filePaths);
+              .remove(fileNames);
 
             if (storageError) {
-              console.error("Storage delete error:", storageError.message);
+              console.error("Storage delete failed:", storageError.message);
+            } else {
+              console.log("Storage delete succeeded:", data);
             }
           }
         }
