@@ -611,16 +611,22 @@
         const shoe = allShoes.find(item => item.id === currentShoeId);
 
         if (shoe && shoe.image_url) {
-          const imgs = Array.isArray(shoe.image_url) ? shoe.image_url : [shoe.image_url];
+          let rawImgs = shoe.image_url;
 
-          // Extract strict filenames, removing any query parameters or relative paths
+          if (typeof rawImgs === 'string') {
+            try {rawImgs = JSON.parse(rawImgs);} catch {rawImgs = [rawImgs];}
+          }
+
+          const imgs = Array.isArray(rawImgs) ? rawImgs : [rawImgs];
+
           const fileNames = imgs.map(urlStr => {
             if (!urlStr) return null;
-            const cleanUrl = urlStr.split('?')[0];
-            return decodeURIComponent(cleanUrl.split('/').pop());
+            let clean = String(urlStr).replace(/[\\'"\[\]]/g, '').trim();
+            clean = clean.split('?')[0];
+            return decodeURIComponent(clean.split('/').pop());
           }).filter(Boolean);
 
-          console.log("Removing storage files:", fileNames);
+          console.log("Cleaned filenames for storage removal:", fileNames);
 
           if (fileNames.length > 0) {
             const {data, error: storageError} = await db.storage
