@@ -601,7 +601,7 @@
 
     async function deleteCurrentShoe() {
       if (!currentShoeId) return;
-      if (!confirm("Are you sure you want to delete these fine soles from the vault?")) return;
+      if (!confirm("Are you sure you wanna get rid of these fine soles?")) return;
 
       const deleteBtn = document.getElementById('deleteBtn');
       deleteBtn.innerText = "Deleting...";
@@ -609,16 +609,34 @@
 
       try {
         const shoe = allShoes.find(item => item.id === currentShoeId);
+
         if (shoe && shoe.image_url) {
           const imgs = Array.isArray(shoe.image_url) ? shoe.image_url : [shoe.image_url];
-          const fileNames = imgs.map(url => url.split('/').pop()).filter(Boolean);
-          if (fileNames.length > 0) {
-            await db.storage.from('shoe-photos').remove(fileNames);
+
+          // Extract clean relative paths inside the 'shoe-photos' bucket
+          const filePaths = imgs.map(urlStr => {
+            try {
+              const parsedUrl = new URL(urlStr);
+              const pathSegments = parsedUrl.pathname.split('/shoe-photos/');
+              return pathSegments.length > 1 ? decodeURIComponent(pathSegments[1]) : null;
+            } catch {
+              return urlStr.split('/').pop();
+            }
+          }).filter(Boolean);
+
+          if (filePaths.length > 0) {
+            const {error: storageError} = await db.storage
+              .from('shoe-photos')
+              .remove(filePaths);
+
+            if (storageError) {
+              console.error("Storage delete error:", storageError.message);
+            }
           }
         }
 
-        const {error} = await db.from('shoes').delete().eq('id', currentShoeId);
-        if (error) throw error;
+        const {error: dbError} = await db.from('shoes').delete().eq('id', currentShoeId);
+        if (dbError) throw dbError;
 
         toggleDetailModal(false);
         fetchShoes();
@@ -662,7 +680,6 @@
       if (!error && data) {
         allShoes = data;
 
-        // Update total counter
         const countEl = document.getElementById('shoeCounter');
         if (countEl) {
           countEl.innerText = `Currently ${allShoes.length} ${allShoes.length === 1 ? 'pair' : 'pairs'} available`;
